@@ -17,7 +17,20 @@
  * redirected into `image.ppm`, which can be opened in any image viewer.
  */
 
+bool hit_sphere(const point3 &center, double radius, const ray &r) {
+    // Check if we hit a sphere placed at 0,0 in the image
+    vec3 oc = r.origin() - center;
+    auto a = dot(r.direction(), r.direction());
+    auto b = 2.0 * dot(oc, r.direction());
+    auto c = dot(oc, oc) - radius * radius;
+    auto discriminant = (b * b) - (4 * a * c);
+    return (discriminant > 0);
+}
+
 color ray_color(const ray &r) {
+    // Decide what colour the pixel that the ray is hitting should be
+    if (hit_sphere(point3(0, 0, -1), 0.5, r))
+        return color(1, 0, 0);
     vec3 unit_direction = unit_vector(r.direction());
     auto t = 0.5 * (unit_direction.y() + 1.0);
     return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
