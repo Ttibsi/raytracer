@@ -4,31 +4,16 @@
 #include "ray.h"
 #include "vec3.h"
 
-/*
- * A PPM file is a type of file that represents an image by specifying
- * every line of pixels, as well as some data at the start that informs the
- * renderer how to display the image.
- *
- * P3 at the start means that its using ascii colours. You then have to specify
- * the size of the image, and the colour space it's using (in our case, 255)
- * and then you can start using RGB triplets to state the colour of each pixel
- *
- * This file needs to be run using at minimum cpp11, and the output is
- * redirected into `image.ppm`, which can be opened in any image viewer.
- */
-
 bool hit_sphere(const point3 &center, double radius, const ray &r) {
-    // Check if we hit a sphere placed at 0,0 in the image
     vec3 oc = r.origin() - center;
     auto a = dot(r.direction(), r.direction());
     auto b = 2.0 * dot(oc, r.direction());
     auto c = dot(oc, oc) - radius * radius;
-    auto discriminant = (b * b) - (4 * a * c);
+    auto discriminant = b * b - 4 * a * c;
     return (discriminant > 0);
 }
 
 color ray_color(const ray &r) {
-    // Decide what colour the pixel that the ray is hitting should be
     if (hit_sphere(point3(0, 0, -1), 0.5, r))
         return color(1, 0, 0);
     vec3 unit_direction = unit_vector(r.direction());
@@ -36,33 +21,16 @@ color ray_color(const ray &r) {
     return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
 }
 
-void basic_render(int img_width, int img_height) {
-    for (int j = img_height - 1; j >= 0; --j) {
-        // This is basically a progress indicator
-        std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
-
-        for (int i = 0; i < img_width; ++i) {
-            auto r = double(i) / (img_width - 1);
-            auto g = double(j) / (img_height - 1);
-            auto b = 0.25;
-
-            // Turn the colour values into ints
-            int ir = static_cast<int>(255.999 * r);
-            int ig = static_cast<int>(255.999 * g);
-            int ib = static_cast<int>(255.999 * b);
-
-            std::cout << ir << ' ' << ig << ' ' << ib << '\n';
-        }
-    }
-}
-
 int main() {
-    // Create image
-    const auto aspect_ratio = 16.0 / 9.0;
-    const int img_width = 400;
-    const int img_height = static_cast<int>(img_width / aspect_ratio);
 
-    // Create camera
+    // Image
+
+    const auto aspect_ratio = 16.0 / 9.0;
+    const int image_width = 400;
+    const int image_height = static_cast<int>(image_width / aspect_ratio);
+
+    // Camera
+
     auto viewport_height = 2.0;
     auto viewport_width = aspect_ratio * viewport_height;
     auto focal_length = 1.0;
@@ -73,17 +41,15 @@ int main() {
     auto lower_left_corner =
         origin - horizontal / 2 - vertical / 2 - vec3(0, 0, focal_length);
 
-    // File renderer
-    std::cout << "P3\n" << img_height << ' ' << img_width << "\n255\n";
-    // basic_render(img_width, img_height)
+    // Render
 
-    for (int j = img_height - 1; j >= 0; --j) {
-        // This is basically a progress indicator
+    std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+
+    for (int j = image_height - 1; j >= 0; --j) {
         std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
-
-        for (int i = 0; i < img_width; ++i) {
-            auto u = double(i) / (img_width - 1);
-            auto v = double(j) / (img_height - 1);
+        for (int i = 0; i < image_width; ++i) {
+            auto u = double(i) / (image_width - 1);
+            auto v = double(j) / (image_height - 1);
             ray r(origin,
                   lower_left_corner + u * horizontal + v * vertical - origin);
             color pixel_color = ray_color(r);
