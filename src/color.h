@@ -10,10 +10,11 @@ void write_color(std::ostream &out, color pixel_color, int samples_per_pixel) {
     auto g = pixel_color.y();
     auto b = pixel_color.z();
 
+    // Gamma correction
     auto scale = 1.0 / samples_per_pixel;
-    r *= scale;
-    g *= scale;
-    b *= scale;
+    r = std::sqrt(scale * r);
+    g = std::sqrt(scale * g);
+    b = std::sqrt(scale * b);
 
     out << static_cast<int>(256 * clamp(r, 0.0, 0.999)) << ' '
         << static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' '
