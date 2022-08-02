@@ -6,9 +6,6 @@
 #include <memory>
 #include <random>
 
-#include "ray.h"
-#include "vec3.h"
-
 const double infinity = std::numeric_limits<double>::infinity();
 const double pi = 3.1415926535897932385;
 
@@ -22,6 +19,12 @@ inline double random_double() {
     return distribution(generator);
 }
 
+inline double random_double(double min, double max) {
+    static std::uniform_real_distribution<double> distribution(min, max);
+    static std::mt19937 generator;
+    return distribution(generator);
+}
+
 inline double clamp(double x, double min, double max) {
     if (x < min)
         return min;
@@ -29,5 +32,8 @@ inline double clamp(double x, double min, double max) {
         return max;
     return x;
 }
+
+#include "ray.h"
+#include "vec3.h"
 
 #endif
