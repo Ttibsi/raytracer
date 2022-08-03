@@ -55,14 +55,18 @@ int main() {
         std::make_shared<Sphere>(point3(0.0, 0.0, -1.0), 0.5, material_center));
     world.add(
         std::make_shared<Sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
+    world.add(std::make_shared<Sphere>(point3(-1.0, 0.0, -1.0), -0.45,
+                                       material_left));
     world.add(
         std::make_shared<Sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
 
     // Camera
-    Camera cam;
+    // You can change the coordinates in the vectors here to move the camera
+    // around
+    Camera cam(point3(-2, 2, 1), point3(0, 0, -1), vec3(0, 1, 0), 20,
+               aspect_ratio);
 
     // Render
-
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
     for (int j = image_height - 1; j >= 0; --j) {
