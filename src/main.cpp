@@ -68,14 +68,18 @@ hittable_list scene() {
         }
     }
 
-    // auto material1 = std::make_shared<Dielectric>(1.5);
-    // world.add(std::make_shared<Sphere>(point3(0, 1, 0), 1.0, material1));
+    // Three big balls
 
-    // auto material2 = std::make_shared<Lambertian>(color(0.4, 0.2, 0.1));
-    // world.add(std::make_shared<Sphere>(point3(-4, 1, 0), 1.0, material2));
+    /*
+    auto material1 = std::make_shared<Dielectric>(1.5);
+    world.add(std::make_shared<Sphere>(point3(0, 1, 0), 1.0, material1));
 
-    // auto material3 = std::make_shared<Metal>(color(0.7, 0.6, 0.5), 0.0);
-    // world.add(std::make_shared<Sphere>(point3(4, 1, 0), 1.0, material3));
+    auto material2 = std::make_shared<Lambertian>(color(0.4, 0.2, 0.1));
+    world.add(std::make_shared<Sphere>(point3(-4, 1, 0), 1.0, material2));
+
+    auto material3 = std::make_shared<Metal>(color(0.7, 0.6, 0.5), 0.0);
+    world.add(std::make_shared<Sphere>(point3(4, 1, 0), 1.0, material3));
+    */
 
     return world;
 }
@@ -92,28 +96,7 @@ int main() {
 
     // World
     auto world = scene();
-    //    hittable_list world;
-    //
-    //    auto material_ground = std::make_shared<Lambertian>(color(0.8, 0.8,
-    //    0.0)); auto material_center = std::make_shared<Lambertian>(color(0.1,
-    //    0.2, 0.5)); auto material_left = std::make_shared<Dielectric>(1.5);
-    //    auto material_right = std::make_shared<Metal>(color(0.8, 0.6, 0.2),
-    //    0.0);
-    //
-    //    world.add(std::make_shared<Sphere>(point3(0.0, -100.5, -1.0), 100.0,
-    //                                       material_ground));
-    //    world.add(
-    //        std::make_shared<Sphere>(point3(0.0, 0.0, -1.0), 0.5,
-    //        material_center));
-    //    world.add(
-    //        std::make_shared<Sphere>(point3(-1.0, 0.0, -1.0), 0.5,
-    //        material_left));
-    //    world.add(std::make_shared<Sphere>(point3(-1.0, 0.0, -1.0), -0.45,
-    //                                       material_left));
-    //    world.add(
-    //        std::make_shared<Sphere>(point3(1.0, 0.0, -1.0), 0.5,
-    //        material_right));
-    //
+
     // Camera
     // You can change the coordinates in the vectors here to move the camera
     // around
